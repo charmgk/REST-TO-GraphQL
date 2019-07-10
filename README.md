@@ -1,4 +1,4 @@
-# How to move from consuming REST API's with Fetch to Consuming REST API's with Apollo to consuming GraphQL with APollo
+# How to move from 1).consuming REST API's with Fetch to 2).Consuming REST API's with Apollo to 3).consuming GraphQL with APollo
 
 ## This is based on the tutorial below I did on medium. Follow me on medium :smile:
 
