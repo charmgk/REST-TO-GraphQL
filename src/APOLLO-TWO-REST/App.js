@@ -64,9 +64,10 @@ export default class componentName extends Component {
     }
     `;
 
-    // Invoke the query and log the person's name
-    client.query({ query }).then(response => {
+    // Invoke the query and manipulate the data
 
+    client.query({ query }).then(response => {
+      // loop over the peoples array to create card objects for each
       let PeoplesObject = response.data.people.results.map((person) => {
         return (
           <Col sm="auto" key={uuidv4()}>
@@ -75,6 +76,7 @@ export default class componentName extends Component {
         )
       })
 
+      // loop over the films array to create card objects for each
       let FilmsObject = response.data.films.results.map((film) => {
         return (
           <Col sm="auto" key={uuidv4()}>
@@ -83,6 +85,7 @@ export default class componentName extends Component {
         )
       })
 
+      // combine the created objects and send it to state
       let results = { "people": PeoplesObject, "films": FilmsObject };
       this.setState({ FetchedData: results, Loading: false });
     });
