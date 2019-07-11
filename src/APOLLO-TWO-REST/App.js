@@ -65,7 +65,6 @@ export default class componentName extends Component {
     `;
 
     // Invoke the query and manipulate the data
-
     client.query({ query }).then(response => {
       // loop over the peoples array to create card objects for each
       let PeoplesObject = response.data.people.results.map((person) => {
