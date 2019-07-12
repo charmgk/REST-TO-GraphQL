@@ -19,10 +19,10 @@ import Button from 'react-bootstrap/Button'
 // spinner to indicate loading status
 import Spinner from 'react-bootstrap/Spinner'
 
-// Apollo client setup for REST API consumption
+// Apollo client setup GRAPHQL consumption
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { RestLink } from 'apollo-link-rest';
+import { HttpLink } from 'apollo-link-http'
 
 // This will be used to structure the query
 import gql from 'graphql-tag';
@@ -44,22 +44,34 @@ export default class componentName extends Component {
   FetchData = () => {
     this.setState({ Loading: true })
 
-    // setup your `RestLink` with your endpoint
-    const restLink = new RestLink({ uri: "https://cors-anywhere.herokuapp.com/https://swapi.co/api/" });
+    // setup your endpoint with HttpLink
+    const GraphQLink = new HttpLink({
+      uri: 'https://swapi.graph.cool/'
+    })
 
-    // setup your client
+    // setup your client with the HttpLink endpoint and a cache
     const client = new ApolloClient({
-      link: restLink,
-      cache: new InMemoryCache(),
-    });
+      link: GraphQLink,
+      cache: new InMemoryCache()
+    })
 
+    // Structure the query
     const query = gql`
-    query swapiData {
-      people @rest(type: "people", path: "people") {
-        results
+    {
+      allPersons {
+        name
+        birthYear
+        gender
+        skinColor
+        height
+        mass
       }
-      films @rest(type: "films", path: "films") {
-        results
+      allFilms {
+        title
+        releaseDate
+        director
+        producers
+        openingCrawl
       }
     }
     `;
@@ -67,7 +79,7 @@ export default class componentName extends Component {
     // Invoke the query and manipulate the data
     client.query({ query }).then(response => {
       // loop over the peoples array to create card objects for each
-      let PeoplesObject = response.data.people.results.map((person) => {
+      let PeoplesObject = response.data.allPersons.map((person) => {
         return (
           <Col sm="auto" key={uuidv4()}>
             <PeopleCard results={person} />
@@ -76,7 +88,7 @@ export default class componentName extends Component {
       })
 
       // loop over the films array to create card objects for each
-      let FilmsObject = response.data.films.results.map((film) => {
+      let FilmsObject = response.data.allFilms.map((film) => {
         return (
           <Col sm="auto" key={uuidv4()}>
             <FilmsCard results={film} />
